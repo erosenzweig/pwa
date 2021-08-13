@@ -1,25 +1,27 @@
-import logo from './logo.svg';
+import React, { useState } from 'react';
+
+import { fetchAnimeQuote } from './api/fetchAnimeQuote';
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+const App = () => {
+    const [quote, setQuote] = useState('');
+
+    const generate = async(e) => {
+        if(e.key === 'Enter' || e.key === undefined) {
+            const quote = await fetchAnimeQuote();
+            setQuote(quote);
+        }
+    }
+
+    return (
+        <div>
+            <div>
+                <span>`{quote.character} ({ quote.anime })`</span><br />
+                <blockquote><p>{ quote.quote }</p></blockquote>
+            </div>
+            <br /><br /><button onClick={ (e) => generate(e) }>Generate</button>
+        </div>
+    );
 }
 
 export default App;
